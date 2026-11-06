@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!-- PASO 9: menú según el rol (sec:authorize), nombre y carrito desde la sesión, logout por POST. -->
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<!-- 1.4 Fragmento header -->
+<nav th:fragment="header" class="navbar navbar-expand-lg bg-light border-bottom">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/}">
+            <i class="bi bi-controller text-danger"></i> GameShop4 [Lab 8]
+        </a>
+
+        <!-- Menú izquierdo según el ROL -->
+        <ul class="navbar-nav me-auto">
+            <!-- ADMIN: Juegos, Plataformas, Distribuidoras -->
+            <th:block sec:authorize="hasAuthority('ADMIN')">
+                <li class="nav-item"><a class="nav-link" th:href="@{/juegos/lista}">Juegos</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/plataformas/lista}">Plataformas</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/distribuidoras/lista}">Distribuidoras</a></li>
+            </th:block>
+            <!-- USER: Juegos (tienda) y Mis Juegos -->
+            <th:block sec:authorize="hasAuthority('USER')">
+                <li class="nav-item"><a class="nav-link" th:href="@{/vista}">Juegos</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/juegos/lista}">Mis Juegos</a></li>
+            </th:block>
+        </ul>
+
+        <!-- NO logueado: solo "Ingresar" -->
+        <a sec:authorize="isAnonymous()" class="nav-link text-secondary" th:href="@{/user/signIn}">Ingresar</a>
+
+        <!-- Logueado -->
+        <div sec:authorize="isAuthenticated()" class="d-flex align-items-center">
+
+            <!-- Carrito (solo USER): muestra la variable de sesión ncarrito -->
+            <a sec:authorize="hasAuthority('USER')" th:href="@{/carrito/lista}"
+               class="position-relative me-3 text-dark fs-5">
+                <i class="bi bi-cart3"></i>
+                <span class="position-absolute top-100 start-100 translate-middle badge rounded-pill bg-danger"
+                      style="font-size:.6rem"
+                      th:text="${session.ncarrito != null ? session.ncarrito : 0}">0</span>
+            </a>
+
+            <!-- Nombre del usuario tomado del objeto User guardado en sesión -->
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle text-secondary" href="#" role="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-person-circle"></i>
+                    <span sec:authorize="hasAuthority('ADMIN')">Admin</span>
+                    <span th:if="${session.usuario != null}"
+                          th:text="'(' + ${session.usuario.nombres} + ' ' + ${session.usuario.apellidos} + ')'">(Nombre)</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <!-- En Spring Security 6 el logout es POST (con token CSRF que Thymeleaf agrega solo) -->
+                        <form th:action="@{/logout}" method="post">
+                            <button type="submit" class="dropdown-item text-danger">
+                                <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

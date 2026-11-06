@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/base :: head('Editar Juego')}"></head>
+<body>
+<nav th:replace="~{fragments/header :: header}"></nav>
+
+<main class="container" style="max-width: 640px">
+    <h2 class="my-3" th:text="${juego.idjuego == 0} ? 'Nuevo Juego' : 'Editar Juego'">Juego</h2>
+
+    <form th:action="@{/juegos/guardar}" method="post" th:object="${juego}">
+        <input type="hidden" th:field="*{idjuego}">
+        <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control" th:field="*{nombre}" th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid'">
+            <div class="invalid-feedback" th:errors="*{nombre}"></div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Descripción</label>
+            <textarea class="form-control" rows="3" th:field="*{descripcion}" th:classappend="${#fields.hasErrors('descripcion')} ? 'is-invalid'"></textarea>
+            <div class="invalid-feedback" th:errors="*{descripcion}"></div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Precio (S/)</label>
+            <input type="number" step="0.01" class="form-control" th:field="*{precio}" th:classappend="${#fields.hasErrors('precio')} ? 'is-invalid'">
+            <div class="invalid-feedback" th:errors="*{precio}"></div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">URL de imagen</label>
+            <input type="text" class="form-control" th:field="*{image}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Género</label>
+            <select class="form-select" th:field="*{genero.idgenero}">
+                <option th:each="g : ${listaGeneros}" th:value="${g.idgenero}" th:text="${g.nombre}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Plataforma</label>
+            <select class="form-select" th:field="*{plataforma.idplataforma}">
+                <option th:each="p : ${listaPlataformas}" th:value="${p.idplataforma}" th:text="${p.nombre}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Distribuidora</label>
+            <select class="form-select" th:field="*{distribuidora.iddistribuidora}">
+                <option th:each="d : ${listaDistribuidoras}" th:value="${d.iddistribuidora}" th:text="${d.nombre}"></option>
+            </select>
+        </div>
+        <a th:href="@{/juegos/lista}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

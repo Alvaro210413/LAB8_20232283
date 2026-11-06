@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/base :: head('Registro')}"></head>
+<body>
+<nav th:replace="~{fragments/header :: header}"></nav>
+<!-- Plantilla del anexo; el registro no se evalúa en este laboratorio -->
+<main class="container" style="max-width: 420px">
+    <h2 class="text-center my-4">Registro</h2>
+    <p class="text-muted text-center">Funcionalidad no requerida en el Lab 8.</p>
+    <a th:href="@{/user/signIn}" class="btn btn-link w-100">Volver a iniciar sesión</a>
+</main>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

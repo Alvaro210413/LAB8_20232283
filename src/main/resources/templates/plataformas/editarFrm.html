@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/base :: head('Editar Plataforma')}"></head>
+<body>
+<nav th:replace="~{fragments/header :: header}"></nav>
+<main class="container" style="max-width: 640px">
+    <h2 class="my-3" th:text="${plataforma.idplataforma == 0} ? 'Nueva Plataforma' : 'Editar Plataforma'">Plataforma</h2>
+    <form th:action="@{/plataformas/guardar}" method="post" th:object="${plataforma}">
+        <input type="hidden" th:field="*{idplataforma}">
+        <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control" th:field="*{nombre}" th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid'">
+            <div class="invalid-feedback" th:errors="*{nombre}"></div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Descripción</label>
+            <textarea class="form-control" rows="3" th:field="*{descripcion}" th:classappend="${#fields.hasErrors('descripcion')} ? 'is-invalid'"></textarea>
+            <div class="invalid-feedback" th:errors="*{descripcion}"></div>
+        </div>
+        <a th:href="@{/plataformas/lista}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+</main>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

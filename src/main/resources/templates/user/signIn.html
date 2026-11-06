@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<!-- PASO 7 (ver application.properties): form POST a /processLogin con inputs "username" y "password". -->
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/base :: head('Iniciar sesión')}"></head>
+<body>
+<nav th:replace="~{fragments/header :: header}"></nav>
+
+<main class="container" style="max-width: 420px">
+    <h2 class="text-center my-4">Iniciar Sesión</h2>
+
+    <!-- Spring redirige a /user/signIn?error si las credenciales fallan -->
+    <div th:if="${param.error}" class="alert alert-danger">Usuario o contraseña incorrectos</div>
+    <div th:if="${param.logout}" class="alert alert-info">Cerraste sesión</div>
+
+    <!-- 1.3 action = /processLogin, inputs name="username" y name="password" -->
+    <form th:action="@{/processLogin}" method="post">
+        <div class="mb-3">
+            <label for="username" class="form-label">Correo</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="correo@pucp.pe" required autofocus>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+    </form>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!-- PASO 12: lista del ADMIN (la elige JuegosController según el rol de la sesión). -->
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/base :: head('Juegos (Admin)')}"></head>
+<body>
+<nav th:replace="~{fragments/header :: header}"></nav>
+
+<!-- 2.3.2 Lista de juegos para el ADMIN (ordenada por precio ascendente) -->
+<main class="container">
+    <h1 class="text-center my-3">Lista de Juegos para la Venta</h1>
+
+    <div th:if="${msg}" class="alert alert-success" th:text="${msg}"></div>
+    <div th:if="${msgError}" class="alert alert-danger" th:text="${msgError}"></div>
+
+    <a th:href="@{/juegos/editarFrm}" class="btn btn-primary mb-3"><i class="bi bi-plus-circle"></i> Nuevo Juego</a>
+
+    <table class="table table-striped align-middle">
+        <thead>
+        <tr>
+            <th>#</th><th></th><th>Nombre</th><th>Descripción</th><th>Plataforma</th>
+            <th>Distribuidora</th><th>Precio (S/)</th><th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="juego, info : ${listaJuegos}">
+            <td th:text="${info.count}">1</td>
+            <td><img th:src="${juego.image}" class="thumb" alt=""></td>
+            <td>
+                <span th:text="${juego.nombre}"></span>
+                <span class="badge badge-genero" th:text="${juego.genero?.nombre}"></span>
+            </td>
+            <td class="small" th:text="${juego.descripcion}"></td>
+            <td th:text="${juego.plataforma?.nombre}"></td>
+            <td th:text="${juego.distribuidora?.nombre}"></td>
+            <td th:text="${juego.precio}"></td>
+            <td class="text-nowrap">
+                <a th:href="@{/juegos/editarFrm(id=${juego.idjuego})}" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
+                <a th:href="@{/juegos/borrar(id=${juego.idjuego})}" class="btn btn-danger btn-sm"
+                   onclick="return confirm('¿Borrar este juego?')"><i class="bi bi-trash"></i></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
